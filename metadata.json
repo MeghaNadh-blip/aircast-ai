@@ -1,0 +1,6 @@
+{
+  "name": "AeroPulse AQI Intelligence & Predictor",
+  "description": "Production-grade Air Quality Index prediction, forecasting, and environmental analytics platform powered by gradient boosted trees and real-time sensor streams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
