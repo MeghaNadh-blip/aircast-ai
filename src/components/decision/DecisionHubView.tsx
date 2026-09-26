@@ -19,7 +19,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { CityStation } from '../../types/aqi';
-import { getAQICategoryInfo } from '../../utils/aqiCalculator';
+import { getAQICategoryInfo, predictAQI } from '../../utils/aqiCalculator';
 
 interface DecisionHubProps {
   station: CityStation;
@@ -31,7 +31,9 @@ export const DecisionHubView: React.FC<DecisionHubProps> = ({ station }) => {
   const [selectedPersona, setSelectedPersona] = useState<PersonaType>('citizens_health');
   const [actionDone, setActionDone] = useState<Record<string, boolean>>({});
 
-  const aqi = Math.round(station.current.pm25 * 2.1);
+  const aqi = typeof station.current.measuredAqi === 'number' && station.current.measuredAqi > 0
+    ? station.current.measuredAqi
+    : predictAQI(station.current).roundedAQI;
   const catInfo = getAQICategoryInfo(aqi);
   const isHighRisk = aqi >= 101;
   const isSevere = aqi >= 151;

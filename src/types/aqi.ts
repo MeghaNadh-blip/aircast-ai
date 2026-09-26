@@ -22,6 +22,9 @@ export interface EnvironmentalData {
   aqiLag24?: number;
   pm25Lag1?: number;
   pm25Lag24?: number;
+  measuredAqi?: number; // Ground-truth US EPA AQI from real-time monitoring
+  europeanAqi?: number; // European EAQI
+  dominantPollutant?: 'PM2.5' | 'PM10' | 'O3' | 'NO2' | 'SO2' | 'CO';
 }
 
 export interface PredictionResult {
@@ -77,6 +80,30 @@ export interface CityStation {
     temperature: number;
     humidity: number;
     windSpeed: number;
+  }>;
+  forecast24h?: Array<{
+    time: string;
+    predictedAQI: number;
+    lowerBound: number;
+    upperBound: number;
+    pm25?: number;
+    temperature?: number;
+  }>;
+  forecast3d?: Array<{
+    time: string;
+    predictedAQI: number;
+    lowerBound: number;
+    upperBound: number;
+    pm25?: number;
+    temperature?: number;
+  }>;
+  forecast7d?: Array<{
+    time: string;
+    predictedAQI: number;
+    lowerBound: number;
+    upperBound: number;
+    pm25?: number;
+    temperature?: number;
   }>;
 }
 

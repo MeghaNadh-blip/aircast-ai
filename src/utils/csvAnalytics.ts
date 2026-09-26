@@ -1,6 +1,7 @@
 /**
  * CSV Analysis and Modeling Engine for User-Uploaded Datasets
  */
+import { calculatePollutantSubIndex } from './aqiCalculator';
 
 export interface ParsedCsvDataset {
   filename: string;
@@ -116,9 +117,9 @@ export function parseAndAnalyzeCsv(csvText: string, filename: string): ParsedCsv
     if (aqiCol && r[aqiCol] !== null && typeof r[aqiCol] === 'number') {
       aqiVal = r[aqiCol];
     } else if (pm25Col && r[pm25Col] !== null && typeof r[pm25Col] === 'number') {
-      // EPA Sub-index calculation
+      // Official EPA Sub-index calculation for PM2.5
       const p = r[pm25Col];
-      aqiVal = p <= 55 ? p * 2.1 : 100 + (p - 55) * 1.5;
+      aqiVal = calculatePollutantSubIndex('PM2.5', p);
     } else {
       aqiVal = 50 + Math.sin(idx / 5) * 30 + 20;
     }
@@ -343,8 +344,8 @@ export function getSampleCsvContent(): string {
     const wind = Number((2.5 - diurnal * 1.2 + Math.random() * 0.8).toFixed(1));
     const press = Number((1014 - diurnal * 2).toFixed(1));
 
-    // AQI calc
-    const aqi = Math.round(pm25 * 2.1);
+    // AQI calc via official EPA standard PM2.5 breakpoint
+    const aqi = calculatePollutantSubIndex('PM2.5', pm25);
     rows.push(`${dt},${aqi},${pm25},${pm10},${o3},${no2},${so2},${co},${temp},${hum},${wind},${press}`);
   }
 

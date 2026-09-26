@@ -25,7 +25,9 @@ export const ForecastView: React.FC<ForecastViewProps> = ({ currentCondition }) 
     const list: HourlyForecast[] = [];
     const baseDate = new Date();
 
-    let rollingAQI = currentCondition.pm25 * 2.1;
+    let rollingAQI = typeof currentCondition.measuredAqi === 'number' && currentCondition.measuredAqi > 0
+      ? currentCondition.measuredAqi
+      : predictAQI(currentCondition).roundedAQI;
     let rollingPM25 = currentCondition.pm25;
 
     for (let i = 1; i <= horizon; i++) {
